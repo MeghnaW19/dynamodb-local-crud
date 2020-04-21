@@ -1,8 +1,13 @@
 package com.stackroute.service;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperTableModel;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.google.common.collect.Table;
+import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome;
+import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
+import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 import com.stackroute.config.AWSDynamoDBUtil;
 import com.stackroute.domain.UserDetails;
 
@@ -11,7 +16,6 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
     public static List<UserDetails> userDetailsList = new ArrayList<>();
-
 
     @Override
     public List<UserDetails> addUserDetails() {
@@ -23,6 +27,7 @@ public class UserServiceImpl implements UserService {
         userDetailsList.add(userDetails2);
         userDetailsList.add(userDetails3);
         List<DynamoDBMapper.FailedBatch> failedBatchList = AWSDynamoDBUtil.getMapper().batchSave(userDetailsList);
+        System.out.println("***" + failedBatchList);
         return userDetailsList;
     }
 
@@ -35,16 +40,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDetails> getAllUserDetails() {
         DynamoDBMapper dynamoDBMapper = AWSDynamoDBUtil.getMapper();
+
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
         List<UserDetails> userList = dynamoDBMapper.scan(UserDetails.class, scanExpression);
         return userList;
     }
 
     @Override
-    public void deleteUserDetails(UserDetails userDetails) {
-        System.out.println("delete**********" + userDetails);
-//        AWSDynamoDBUtil.getMapper().batchDelete(userDetails);
-//            AWSDynamoDBUtil.getMapper();
+    public void deleteUserDetails() {
+        DynamoDBMapper dynamoDBMapper = AWSDynamoDBUtil.getMapper();
+
+
+        DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
+                .withPrimaryKey("id", 1);
+//                dynamoDBMapper.delete(deleteItemSpec);
+
+
+
+//        AWSDynamoDBUtil.getMapper().load(UserDetails.class, userDetails.getId());
+//        AWSDynamoDBUtil.getMapper().delete(userDetails);
+        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+        List<UserDetails> userList = dynamoDBMapper.scan(UserDetails.class, scanExpression);
 
     }
 
@@ -52,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserDetails(String id) {
         UserDetails userDetails1 = new UserDetails("1", "Perk", "Male", "7412588888");
-//
+
 //        userDetailsList.add(userDetails1);
 //        AWSDynamoDBUtil.getMapper().save(userDetailsList);
 //        for (UserDetails userList1 : userDetailsList)
@@ -64,9 +80,10 @@ public class UserServiceImpl implements UserService {
         UserServiceImpl userService = new UserServiceImpl();
         UserDetails userDetails1 = new UserDetails("1", "John", "Male", "7412588888");
         userService.addUserDetails();
-//        userService.getAllUserDetails();
+        userService.getAllUserDetails();
 //        userService.updateEmployee(userDetails1);
 //        userService.deleteUserDetails(userDetails1);
 //        userService.updateUserDetails(1);
+        userService.deleteUserDetails();
     }
 }

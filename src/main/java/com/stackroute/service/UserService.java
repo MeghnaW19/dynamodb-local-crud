@@ -9,7 +9,7 @@ public interface UserService {
 
     public List<UserDetails> getAllUserDetails();
 
-    public void deleteUserDetails(UserDetails userDetails);
+    public void deleteUserDetails();
 
     public void updateUserDetails(String id);
 
