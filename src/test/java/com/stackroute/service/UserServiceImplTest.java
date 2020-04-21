@@ -32,7 +32,6 @@ class UserServiceImplTest {
     @AfterEach
     void tearDown() {
         userService = null;
-
     }
 
     @Test
@@ -47,6 +46,7 @@ class UserServiceImplTest {
         List<UserDetails> userDetailsList = userService.getAllUserDetails();
         assertNotNull(userDetailsList);
         assertEquals(3, userDetailsList.size());
+        assertEquals(userDetailsList.get(0).getName(), userList.get(0).getName());
     }
 
     @Test
