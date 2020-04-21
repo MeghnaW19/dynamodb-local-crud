@@ -61,6 +61,6 @@ public class UserServiceImpl implements UserService {
         userService.getAllUserDetails();
 //        userService.updateEmployee(userDetails1);
 //        userService.deleteUserDetails(userDetails1);
-        userService.updateUserDetails(1);
+//        userService.updateUserDetails(1);
     }
 }
