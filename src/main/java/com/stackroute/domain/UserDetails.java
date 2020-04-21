@@ -5,11 +5,11 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBGeneratedUuid;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
-@DynamoDBTable(tableName = "UserDetails")
+@DynamoDBTable(tableName = "UserDetail")
 public class UserDetails {
 
 //    @DynamoDBGeneratedUuid(DynamoDBAutoGenerateStrategy.CREATE)
-    private int id;
+    private String id;
     private String name;
     private String gender;
     private String contactNumber;
@@ -19,7 +19,7 @@ public class UserDetails {
     }
 
     /*Parameterized constructor*/
-    public UserDetails(int id, String name, String gender, String contactNumber) {
+    public UserDetails(String id, String name, String gender, String contactNumber) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -29,11 +29,11 @@ public class UserDetails {
     /*Getters and Setters*/
 
     @DynamoDBHashKey(attributeName = "id")
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

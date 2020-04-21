@@ -14,24 +14,30 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void addUserDetails() {
-        UserDetails userDetails1 = new UserDetails(1, "John", "Male", "7412588888");
-        UserDetails userDetails2 = new UserDetails(2, "Ravi", "Male", "8520258520");
+    public List<UserDetails> addUserDetails() {
+        UserDetails userDetails1 = new UserDetails("1", "John", "Male", "7412588888");
+        UserDetails userDetails2 = new UserDetails("2", "Ravi", "Male", "8520258520");
+        UserDetails userDetails3 = new UserDetails("3", "Priya", "Female", "9632587411");
 
         userDetailsList.add(userDetails1);
         userDetailsList.add(userDetails2);
-        AWSDynamoDBUtil.getMapper().batchSave(userDetailsList);
+        userDetailsList.add(userDetails3);
+        List<DynamoDBMapper.FailedBatch> failedBatchList = AWSDynamoDBUtil.getMapper().batchSave(userDetailsList);
+        return userDetailsList;
     }
+
+//    @Override
+//    public UserDetails addUserDetails(UserDetails user){
+//        DynamoDBMapper dynamoDBMapper= AWSDynamoDBUtil.getMapper();
+//        return dynamoDBMapper.load(UserDetails.class, user.getId());
+//    }
 
     @Override
     public List<UserDetails> getAllUserDetails() {
         DynamoDBMapper dynamoDBMapper = AWSDynamoDBUtil.getMapper();
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
         List<UserDetails> userList = dynamoDBMapper.scan(UserDetails.class, scanExpression);
-        for (UserDetails userList1 : userList)
-            System.out.println(userList1);
         return userList;
-//        return null;
     }
 
     @Override
@@ -44,8 +50,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void updateUserDetails(int id) {
-//        UserDetails userDetails1 = new UserDetails(1, "Perk", "Male", "7412588888");
+    public void updateUserDetails(String id) {
+        UserDetails userDetails1 = new UserDetails("1", "Perk", "Male", "7412588888");
 //
 //        userDetailsList.add(userDetails1);
 //        AWSDynamoDBUtil.getMapper().save(userDetailsList);
@@ -56,9 +62,9 @@ public class UserServiceImpl implements UserService {
 
     public static void main(String[] args) {
         UserServiceImpl userService = new UserServiceImpl();
-        UserDetails userDetails1 = new UserDetails(1, "John", "Male", "7412588888");
+        UserDetails userDetails1 = new UserDetails("1", "John", "Male", "7412588888");
         userService.addUserDetails();
-        userService.getAllUserDetails();
+//        userService.getAllUserDetails();
 //        userService.updateEmployee(userDetails1);
 //        userService.deleteUserDetails(userDetails1);
 //        userService.updateUserDetails(1);
